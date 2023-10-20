@@ -1,6 +1,6 @@
-import _ from "lodash";
+import * as _ from "lodash";
 import axios from 'axios';
-import { IFilm, IPeople, IPlanet, ISpecie, IStarship, IVehicle, ResourcesType} from './types';
+import { type IFilm, type IPeople, type IPlanet, type ISpecie, type IStarship, type IVehicle, ResourcesType} from './types';
 
 const cache = typeof window !== 'undefined' ? window.localStorage : null;
 const prefix = "swCache";
