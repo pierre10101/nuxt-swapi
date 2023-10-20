@@ -21,11 +21,7 @@ async function request(url: string) {
     },
   };
 
-  let result = await (await axios(url, headers)).data;
-
-  if (result.data) {
-    result = await result.data;
-  }
+  const result = await (await axios(url, headers)).data;
 
   if (cache) {
     cache.setItem(`${prefix}.${url}`, JSON.stringify(result));
