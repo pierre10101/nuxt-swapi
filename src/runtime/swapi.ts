@@ -1,33 +1,36 @@
 import * as _ from "lodash";
-import axios from 'axios';
-import { type IFilm, type IPeople, type IPlanet, type ISpecie, type IStarship, type IVehicle, ResourcesType} from './types';
-
-const cache = typeof window !== 'undefined' ? window.localStorage : null;
-const prefix = "swCache";
+import axios from "axios";
+import {
+  type IFilm,
+  type IPeople,
+  type IPlanet,
+  type ISpecie,
+  type IStarship,
+  type IVehicle,
+  ResourcesType,
+} from "./types";
 
 async function request(url: string) {
-  let cached = null;
-  if (cache) {
-    cached = cache.getItem(`${prefix}.${url}`);
-  }
-
-  if (cached) {
-    return JSON.parse(cached);
-  }
-
   const headers = {
     headers: {
       accept: "application/json",
     },
   };
 
-  const result = await (await axios(url, headers)).data;
+  const result = await axios<{
+    count?: number;
+    next?: number | null;
+    previous?: number | null;
+    result: [] | null;
+  }>(url, headers);
 
-  if (cache) {
-    cache.setItem(`${prefix}.${url}`, JSON.stringify(result));
+  if (result.status === 200) {
+    return result.data;
   }
-
-  return result;
+  return {
+    status: result.status,
+    message: result.statusText,
+  };
 }
 
 class Resource<T> {
