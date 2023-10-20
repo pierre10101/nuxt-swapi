@@ -1,6 +1,6 @@
 {
   "name": "swapi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A nuxt module for Star Wars API",
   "repository": "pierre10101/swapi",
   "license": "MIT",
