@@ -1,6 +1,10 @@
 # Changelog
 
 
+## v1.0.6
+
+[compare changes](https://github.com/pierre10101/swapi/compare/release...v1.0.6)
+
 ## v1.0.5
 
 [compare changes](https://github.com/pierre10101/swapi/compare/v1.0.4...v1.0.5)
