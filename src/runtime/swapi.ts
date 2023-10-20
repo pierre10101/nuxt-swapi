@@ -24,7 +24,7 @@ async function request(url: string) {
   let result = await (await axios(url, headers)).data;
 
   if (result.data) {
-    result = result.data;
+    result = await result.data;
   }
 
   if (cache) {
