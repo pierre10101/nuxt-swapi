@@ -5,6 +5,4 @@
 </template>
 
 <script setup lang="ts">
-const starWarsApi = useSwapi();
-console.log(starWarsApi)
 </script>
