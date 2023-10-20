@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import fetch from 'node-fetch';
+import axios from 'axios';
 import { type IFilm, type IPeople, type IPlanet, type ISpecie, type IStarship, type IVehicle, ResourcesType} from './types';
 
 const cache = typeof window !== 'undefined' ? window.localStorage : null;
@@ -16,11 +16,12 @@ async function request(url: string) {
   }
 
   const headers = {
-    "headers": {
-      "accept": "application/json"
-    }
+    headers: {
+      accept: "application/json",
+    },
   };
-  const result = await fetch(url, headers).then(res => res.json());
+
+  const result = await (await axios(url, headers)).data;
 
   if (cache) {
     cache.setItem(`${prefix}.${url}`, JSON.stringify(result));
