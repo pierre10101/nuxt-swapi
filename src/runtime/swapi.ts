@@ -1,5 +1,4 @@
 import * as _ from "lodash";
-import axios from "axios";
 import {
   type IFilm,
   type IPeople,
@@ -10,27 +9,54 @@ import {
   ResourcesType,
 } from "./types";
 
-async function request(url: string) {
+import axios, { type AxiosResponse } from "axios";
+
+interface CustomErrorResponse {
+  status: number;
+  data: null;
+  message: string;
+}
+
+interface CustomSuccessResponse<T> {
+  status: number;
+  data: T;
+}
+
+async function request<T>(
+  url: string
+): Promise<CustomSuccessResponse<T> | CustomErrorResponse> {
   const headers = {
     headers: {
       accept: "application/json",
     },
   };
 
-  const result = await axios<{
-    count?: number;
-    next?: number | null;
-    previous?: number | null;
-    result: [] | null;
-  }>(url, headers);
+  try {
+    const result: AxiosResponse<T> = await axios.get(url, headers);
 
-  if (result.status === 200) {
-    return result.data;
+    if (result.status === 200) {
+      return {
+        status: result.status,
+        data: result.data,
+      };
+    } else {
+      return {
+        status: result.status,
+        data: null,
+        message: result.statusText,
+      };
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        status: error.response?.status || 500,
+        data: null,
+        message: error.message,
+      };
+    } else {
+      throw error;
+    }
   }
-  return {
-    status: result.status,
-    message: result.statusText,
-  };
 }
 
 class Resource<T> {
@@ -98,35 +124,43 @@ function collectionBuilder<T>(resource: ResourcesType) {
       return this;
     }
 
-    static getPage(page: number = 1, search?: string) {
+    static getPage<T>(page: number = 1, search?: string) {
       if (search) {
-        return request(`${SWCollection.root}?page=${page}&search=${search}`);
+        return request<T>(`${SWCollection.root}?page=${page}&search=${search}`);
       }
 
-      return request(`${SWCollection.root}?page=${page}`);
+      return request<T>(`${SWCollection.root}?page=${page}`);
     }
 
-    public static async find(predicate?: (single: T) => boolean) {
-      const { count, results: firstResult } = await SWCollection.getPage();
-      const pages = Math.ceil(count / firstResult.length);
-      const left = Array.from(
-        {
-          length: pages - 1,
-        },
-        (_, i) => SWCollection.getPage(2 + i)
-      );
-      const restResults = await Promise.all(left);
+    public static async find(predicate: (single: T) => boolean) {
+      const { data } = await SWCollection.getPage<{
+        count: number;
+        results: T[];
+      }>();
+      if (data) {
+        const pages = Math.ceil(data.count / data.results.length);
+        const left = Array.from(
+          {
+            length: pages - 1,
+          },
+          (_, i) => SWCollection.getPage<{ count: number; results: T[] }>(2 + i)
+        );
+        const restResults = await Promise.all(left);
 
-      const totalResults: T[] = [
-        {
-          results: firstResult,
-        },
-        ...restResults,
-      ].reduce((allResults, { results }) => {
-        return [...allResults, ...results];
-      }, []);
+        const totalResults: T[] = [
+          {
+            results: data.results,
+          },
+          ...restResults,
+        ].reduce((prev, current) => {
+          if ("results" in current) {
+            return [...prev, ...current.results];
+          }
+          return prev;
+        }, [] as T[]);
 
-      return new SWCollection(_.filter(totalResults, predicate));
+        return new SWCollection(_.filter(totalResults, predicate));
+      }
     }
 
     public static async findBySearch(predicate: string[]) {
