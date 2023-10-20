@@ -1,10 +1,10 @@
 {
   "name": "nuxt-swapi",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A nuxt module for Star Wars API",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pierre10101/swapi.git"
+    "url": "git+https://github.com/pierre10101/nuxt-swapi.git"
   },
   "license": "MIT",
   "type": "module",
