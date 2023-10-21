@@ -113,7 +113,7 @@ export interface IFilm {
     Vehicles = "vehicles",
   }
 
-  export type Resource = IFilm | IPeople | ISpecie | IStarship | IVehicle;
+  export type Resource = IFilm | IPeople | ISpecie | IStarship | IVehicle | IPlanet;
   export interface CustomSuccessResponse<T> {
     status: number;
     data: T;
