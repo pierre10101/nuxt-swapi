@@ -103,7 +103,7 @@ export interface IFilm {
     url: string;
     vehicle_class: string;
   }
-  
+
   export enum ResourcesType {
     Films = "films",
     People = "people",
@@ -111,5 +111,24 @@ export interface IFilm {
     Species = "species",
     Starships = "starships",
     Vehicles = "vehicles",
+  }
+
+  export type Resource = IFilm | IPeople | ISpecie | IStarship | IVehicle;
+  export interface CustomSuccessResponse<T> {
+    status: number;
+    data: T;
+  }
+
+  export interface IPage {
+    count:number,
+    next: string | null,
+    previous: string | null,
+    results: Resource[]
+  }
+
+  export interface CustomErrorResponse {
+    status: number;
+    data: null;
+    message: string;
   }
   

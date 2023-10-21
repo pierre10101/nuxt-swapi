@@ -5,21 +5,16 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted} from 'vue';
+
+const people = ref();
+const films = ref();
+const species = ref();
+const planets = ref();
 
 onMounted(async () => {
-  const swapi = useSwapi();
-
-// const value = await swapi.Films.getPage(1);
-// const value2 = await swapi.People.getPage(1);
-const value3 = await swapi.Films.find((item) => {
-  console.log(item.characters)
-  if (item.title === 'A New Hope') {
-    return true;
-  }
-  return false;
-})
-console.log(value3)
-
+  people.value = await useSwapi().People.getAll()
+  films.value = await useSwapi().Films.getAll()
+  species.value = await useSwapi().Species.getAll()
+  planets.value = await useSwapi().Planets.getAll()
 })
 </script>

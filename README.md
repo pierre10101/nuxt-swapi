@@ -11,8 +11,9 @@
 
 ## Features
 
-- The project is typehinted so you can easily use the swapi
+- The project is typehinted so you can easily use the Star Wars API. 
 - See the documentation for more information [swapi](https://swapi.dev/)
+- Full documentation to follow.
 
 ## Quick Setup
 

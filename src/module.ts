@@ -1,6 +1,6 @@
-import { addImports, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addImportsDir, addTypeTemplate, createResolver, defineNuxtModule, installModule } from '@nuxt/kit'
 import { name, version } from '../package.json'
-
+import * as types from './runtime/types';
 export interface ModuleOptions {
   config?: Record<string, any>
 }
@@ -17,18 +17,14 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     config: {},
   },
-  setup(options, nuxt) {
+  async setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
-
     nuxt.options.build.transpile.push(resolve('runtime'))
+    addTypeTemplate({
+      filename: 'types/nuxt-swapi.d.ts',
+      getContents: () => String(types)
+    })
 
-    addImports([
-      'useSwapi',
-    ].map(name => ({
-      name,
-      as: name,
-      from: resolve(`runtime/composables/${name}`),
-    })))
-
+    addImportsDir(resolve('runtime/composables'))
   },
 })
