@@ -117,7 +117,6 @@ class StarWarsClass<T> {
           }
           return prev;
         }, [] as Resource[]);
-        console.log(totalResults);
         return totalResults
       }
     }
