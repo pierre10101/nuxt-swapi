@@ -1,4 +1,4 @@
-import { addImportsDir, addTypeTemplate, createResolver, defineNuxtModule, installModule } from '@nuxt/kit'
+import { addImportsDir, addTypeTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { name, version } from '../package.json'
 import * as types from './runtime/types';
 export interface ModuleOptions {

@@ -60,10 +60,10 @@ class StarWarsClass<T> {
 
     public getPage(page: number = 1, search?: string) {
       if (search) {
-        return request<IPage>(`${this.rootUrl}?page=${page}&search=${search}`);
+        return request<IPage<T>>(`${this.rootUrl}?page=${page}&search=${search}`);
       }
 
-      return request<IPage>(`${this.rootUrl}?page=${page}`);
+      return request<IPage<T>>(`${this.rootUrl}?page=${page}`);
     }
 
     public async find(predicate: (single: T) => boolean) {
@@ -78,7 +78,7 @@ class StarWarsClass<T> {
         );
         const restResults = await Promise.all(left);
 
-        const totalResults: Resource[] = [
+        const totalResults: T[] = [
           {
             results: data.results,
           },
@@ -88,7 +88,7 @@ class StarWarsClass<T> {
             return [...prev, ...current.results];
           }
           return prev;
-        }, [] as Resource[]);
+        }, [] as T[]);
 
         return _.filter(totalResults, predicate);
       }
@@ -106,7 +106,7 @@ class StarWarsClass<T> {
         );
         const restResults = await Promise.all(left);
 
-        const totalResults: Resource[] = [
+        const totalResults: T[] = [
           {
             results: data.results,
           },
@@ -116,20 +116,20 @@ class StarWarsClass<T> {
             return [...prev, ...current.results];
           }
           return prev;
-        }, [] as Resource[]);
+        }, [] as T[]);
         return totalResults
       }
     }
 
     public async findBySearch(predicate: string[]) {
       return (await Promise.all(
-        predicate.map((query) =>  request<IPage>(`${this.rootUrl}?search=${query}`))
+        predicate.map((query) =>  request<IPage<T>>(`${this.rootUrl}?search=${query}`))
       )).map((item) => item.data);
     }
 
     public async findByUrl(predicate: string[]) {
       return (await Promise.all(
-        predicate.map(async (query) =>  request<IPage>(query))
+        predicate.map(async (query) =>  request<IPage<T>>(query))
       )).map((item) => item.data);
     }
   }

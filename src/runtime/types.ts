@@ -119,11 +119,11 @@ export interface IFilm {
     data: T;
   }
 
-  export interface IPage {
+  export interface IPage<T> {
     count:number,
     next: string | null,
     previous: string | null,
-    results: Resource[]
+    results: T[]
   }
 
   export interface CustomErrorResponse {
