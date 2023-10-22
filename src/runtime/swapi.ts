@@ -127,9 +127,9 @@ class StarWarsClass<T> {
       )).map((item) => item.data);
     }
 
-    public async findByUrl(predicate: string[]) {
+    public async findByUrl(urls: string[]) {
       return (await Promise.all(
-        predicate.map(async (query) =>  request<IPage<T>>(query))
+        urls.map((query) =>  request<T>(query))
       )).map((item) => item.data);
     }
   }
