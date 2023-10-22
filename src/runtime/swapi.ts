@@ -122,11 +122,15 @@ class StarWarsClass<T> {
     }
 
     public async findBySearch(predicate: string[]) {
-      const pages = await Promise.all(
-        predicate.map((query) => this.getPage(1, query))
-      );
+      return (await Promise.all(
+        predicate.map((query) =>  request<IPage>(`${this.rootUrl}?search=${query}`))
+      )).map((item) => item.data);
+    }
 
-      return _.flatMap(pages, "results");
+    public async findByUrl(predicate: string[]) {
+      return (await Promise.all(
+        predicate.map(async (query) =>  request<IPage>(query))
+      )).map((item) => item.data);
     }
   }
 
