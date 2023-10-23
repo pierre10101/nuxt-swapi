@@ -77,20 +77,27 @@ class StarWarsClass<T> {
         );
         const restResults = await Promise.all(left);
 
-        const totalResults: T[] = [
-          {
-            results: data.results,
-          },
-          ...restResults,
-        ].reduce((prev, current) => {
-          if ("results" in current) {
-            return [...prev, ...current.results];
+          try {
+            const totalResults: T[] = [
+              {
+                data: {
+                  results: data.results
+                },
+              },
+              ...restResults,
+            ].reduce((prev, current) => {
+              if (current.data) {
+                return [...prev, ...current.data.results];
+              }
+              return prev;
+            }, [] as T[]);
+    
+            return _.filter(totalResults, predicate);
+          } catch(error: unknown) {
+            return null;
           }
-          return prev;
-        }, [] as T[]);
-
-        return _.filter(totalResults, predicate);
       }
+      return null
     }
 
     public async getAll() {
@@ -104,23 +111,26 @@ class StarWarsClass<T> {
           (_, i) => this.getPage(2 + i)
         );
         const restResults = await Promise.all(left);
-        console.log(restResults);
-
-        const totalResults: T[] = [
-          {
-            data: {
-              results: data.results
+        try {
+          const totalResults: T[] = [
+            {
+              data: {
+                results: data.results
+              },
             },
-          },
-          ...restResults,
-        ].reduce((prev, current) => {
-          if (current.data) {
-            return [...prev, ...current.data.results];
-          }
-          return prev;
-        }, [] as T[]);
-        return totalResults
+            ...restResults,
+          ].reduce((prev, current) => {
+            if (current.data) {
+              return [...prev, ...current.data.results];
+            }
+            return prev;
+          }, [] as T[]);
+          return totalResults
+        } catch (error) {
+          return null;
+        }
       }
+      return null;
     }
 
     public async findBySearch(predicate: string[]) {
