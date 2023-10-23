@@ -8,13 +8,13 @@
 import { useSwapi } from '../src/runtime/composables/useSwapi';
 import { onMounted } from 'vue';
 
-const { Films} = useSwapi();
+const { People } = useSwapi();
 
 onMounted(async () => {
   // console.log(await Films.getPage());
-  // console.log(await Films.getAll());
+  console.log(await People.getAll());
   // console.log(await Films.findBySearch(['tattoine']));
-  console.log(await Films.findByUrl(['https://swapi.dev/api/films/1/']));
+  // console.log(await Films.findByUrl(['https://swapi.dev/api/films/1/']));
   // console.log(await Films.find((value)=> value.title === 'test'));
 })
 </script>

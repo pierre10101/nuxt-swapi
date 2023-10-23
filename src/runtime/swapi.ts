@@ -104,15 +104,18 @@ class StarWarsClass<T> {
           (_, i) => this.getPage(2 + i)
         );
         const restResults = await Promise.all(left);
+        console.log(restResults);
 
         const totalResults: T[] = [
           {
-            results: data.results,
+            data: {
+              results: data.results
+            },
           },
           ...restResults,
         ].reduce((prev, current) => {
-          if ("results" in current) {
-            return [...prev, ...current.results];
+          if (current.data) {
+            return [...prev, ...current.data.results];
           }
           return prev;
         }, [] as T[]);
