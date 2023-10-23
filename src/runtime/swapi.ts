@@ -6,7 +6,6 @@ import {
   type ISpecie,
   type IStarship,
   type IVehicle,
-  type Resource,
   ResourcesType,
 type CustomSuccessResponse,
 type CustomErrorResponse,
