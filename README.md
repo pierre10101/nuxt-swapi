@@ -70,13 +70,13 @@ npm run release
 
 <!-- Badges -->
 [npm-version-src]: https://img.shields.io/npm/v/my-module/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-version-href]: https://npmjs.com/package/my-module
+[npm-version-href]: https://www.npmjs.com/package/nuxt-swapi
 
 [npm-downloads-src]: https://img.shields.io/npm/dm/my-module.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-downloads-href]: https://npmjs.com/package/my-module
+[npm-downloads-href]: https://www.npmjs.com/package/nuxt-swapi
 
 [license-src]: https://img.shields.io/npm/l/my-module.svg?style=flat&colorA=18181B&colorB=28CF8D
-[license-href]: https://npmjs.com/package/my-module
+[license-href]: https://www.npmjs.com/package/nuxt-swapi
 
 [nuxt-src]: https://img.shields.io/badge/Nuxt-18181B?logo=nuxt.js
 [nuxt-href]: https://nuxt.com
