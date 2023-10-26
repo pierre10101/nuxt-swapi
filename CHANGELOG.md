@@ -3,6 +3,10 @@
 
 ## v1.0.23
 
+[compare changes](https://github.com/pierre10101/nuxt-swapi/compare/v1.0.23...v1.0.23)
+
+## v1.0.23
+
 [compare changes](https://github.com/pierre10101/nuxt-swapi/compare/v1.0.22...v1.0.23)
 
 ## v1.0.22
