@@ -22,7 +22,7 @@ export default defineNuxtModule<ModuleOptions>({
     addTypeTemplate({
       filename: 'types/nuxt-swapi.d.ts',
       dst: 'nuxt-swapi',
-      src: resolve('runtime/types.ts')
+      getContents: () => resolve('runtime/types') 
     })
     addImportsDir(resolve('runtime/composables'))
   },
