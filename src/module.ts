@@ -19,7 +19,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   async setup() {
     const { resolve } = createResolver(import.meta.url)
-    const data = await readFile(resolve('runtime/types.ts'), 'utf8');
+    const data = await readFile(resolve('runtime/types.d.ts'), 'utf8');
     addTypeTemplate({
       filename: 'types/nuxt-swapi.d.ts',
       getContents: () => data

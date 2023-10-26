@@ -6,8 +6,8 @@ import {
   type ISpecie,
   type IStarship,
   type IVehicle,
+  ResourcesType,
 type IPage,
-ResourcesType,
 } from "./types";
 
 class StarWarsClass<T> {
