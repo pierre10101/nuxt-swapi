@@ -1,5 +1,6 @@
 import { addImportsDir, addTypeTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { name, version } from '../package.json'
+import { readFile } from 'fs/promises';
 export interface ModuleOptions {
   config?: Record<string, any>
 }
@@ -16,12 +17,12 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     config: {},
   },
-  async setup(options, nuxt) {
+  async setup() {
     const { resolve } = createResolver(import.meta.url)
-    nuxt.options.build.transpile.push(resolve('runtime'))
+    const data = await readFile(resolve('runtime/types.ts'), 'utf8');
     addTypeTemplate({
       filename: 'types/nuxt-swapi.d.ts',
-      getContents: () => "import * as types from './runtime/types';"
+      getContents: () => data
     })
     addImportsDir(resolve('runtime/composables'))
   },

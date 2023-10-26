@@ -9,5 +9,8 @@
   },
   "devDependencies": {
     "nuxt": "latest"
+  },
+  "dependencies": {
+    "nuxt-full-static": "^0.2.1"
   }
 }

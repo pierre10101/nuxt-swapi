@@ -1,5 +1,6 @@
 export default defineNuxtConfig({
-  modules: ["../src/module"],
+  modules: ["../src/module", 'nuxt-full-static'],
+  ssr: true,
   experimental: {
     typescriptBundlerResolution: true,
   },
