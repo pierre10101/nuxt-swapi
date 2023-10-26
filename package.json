@@ -1,6 +1,6 @@
 {
   "name": "nuxt-swapi",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "A nuxt module for Star Wars API",
   "repository": {
     "type": "git",
