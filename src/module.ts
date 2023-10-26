@@ -21,9 +21,8 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.build.transpile.push(resolve('runtime'))
     addTypeTemplate({
       filename: 'types/nuxt-swapi.d.ts',
-      getContents: () => resolve('./runtime/types')
+      src: resolve('runtime/types.ts')
     })
-
     addImportsDir(resolve('runtime/composables'))
   },
 })
