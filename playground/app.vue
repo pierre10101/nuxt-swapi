@@ -5,8 +5,8 @@
 </template>
 
 <script setup lang="ts">
-import { useSwapi } from '../src/runtime/composables/useSwapi';
 import { onMounted } from 'vue';
+import { useSwapi } from '../src/runtime/composables/useSwapi';
 
 const { Films, People } = useSwapi();
 
