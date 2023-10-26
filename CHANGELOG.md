@@ -5,6 +5,18 @@
 
 [compare changes](https://github.com/pierre10101/nuxt-swapi/compare/v1.0.23...v1.0.23)
 
+### 🏡 Chore
+
+- **release:** V1.0.23 ([2727ebc](https://github.com/pierre10101/nuxt-swapi/commit/2727ebc))
+
+### ❤️ Contributors
+
+- Pierre ([@pierre10101](http://github.com/pierre10101))
+
+## v1.0.23
+
+[compare changes](https://github.com/pierre10101/nuxt-swapi/compare/v1.0.23...v1.0.23)
+
 ## v1.0.23
 
 [compare changes](https://github.com/pierre10101/nuxt-swapi/compare/v1.0.22...v1.0.23)
