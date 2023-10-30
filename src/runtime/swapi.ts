@@ -9,7 +9,7 @@ import {
   ResourcesType,
 type IPage,
 } from "./types";
-
+import { StorageSerializers, useSessionStorage } from '@vueuse/core';
 class StarWarsClass<T> {
     private rootUrl: string;
 
@@ -19,11 +19,25 @@ class StarWarsClass<T> {
 
     public async getPage(page: number = 1, search?: string) {
       if (search) {
-
-        return await $fetch<IPage<T>>(`${this.rootUrl}?page=${page}&search=${search}`)
+        const cached = useSessionStorage(this.rootUrl, null, {
+          serializer: StorageSerializers.object,
+        });
+      
+        if (!cached.value) {
+          cached.value = await $fetch(`${this.rootUrl}?page=${page}&search=${search}`)
+        } 
+      
+        return cached.value;
       }
-
-      return $fetch<IPage<T>>(`${this.rootUrl}?page=${page}`)
+      const cached = useSessionStorage(this.rootUrl, null, {
+        serializer: StorageSerializers.object,
+      });
+    
+      if (!cached.value) {
+        cached.value = await $fetch(`${this.rootUrl}?page=${page}`)
+      } 
+    
+      return cached.value;
     }
 
     public async find(predicate: (single: T) => boolean) {
@@ -71,13 +85,13 @@ class StarWarsClass<T> {
 
     public async findBySearch(predicate: string[]) {
       return (await Promise.all(
-        predicate.map((query) => $fetch<T>(`${this.rootUrl}?search=${query}`))
+        predicate.map((query) => $fetch(`${this.rootUrl}?search=${query}`))
       )).map((item) => item);
     }
 
     public async findByUrl(urls: string[]) {
       return (await Promise.all(
-        urls.map((query) =>  $fetch<T>(query))
+        urls.map((query) =>  $fetch(query))
       )).map((item) => item);
     }
   }

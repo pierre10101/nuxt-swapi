@@ -4,15 +4,15 @@ import { useSwapi } from '../../src/runtime/composables/useSwapi';
 import {ref} from 'vue';
 import {useAsyncData} from '#imports';
 
-const { Films } = useSwapi();
+const { Films, People } = useSwapi();
 const test = ref();
 test.value = useAsyncData('test', async () =>await Films.getPage());
 onMounted(async () => {
     
-//   await People.getAll()
-//   await Films.findBySearch(['tattoine'])
-//   await Films.findByUrl(['https://swapi.dev/api/films/1/'])
-//   await Films.find((value)=> value.title === 'test')
+  await People.getAll()
+  await Films.findBySearch(['tattoine'])
+  await Films.findByUrl(['https://swapi.dev/api/films/1/'])
+  await Films.find((value)=> value.title === 'test')
 })
 </script>
 
