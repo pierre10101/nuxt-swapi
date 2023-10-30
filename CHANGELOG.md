@@ -1,6 +1,10 @@
 # Changelog
 
 
+## v1.0.29
+
+[compare changes](https://github.com/pierre10101/nuxt-swapi/compare/v1.0.28...v1.0.29)
+
 ## v1.0.28
 
 [compare changes](https://github.com/pierre10101/nuxt-swapi/compare/v1.0.27...v1.0.28)
