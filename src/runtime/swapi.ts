@@ -7,94 +7,83 @@ import {
   type IStarship,
   type IVehicle,
   ResourcesType,
-type IPage,
+  type IPage,
 } from "./types";
-import { StorageSerializers, useSessionStorage } from '@vueuse/core';
+
 class StarWarsClass<T> {
-    private rootUrl: string;
+  private rootUrl: string;
 
-    constructor(resourceType: ResourcesType) {
-      this.rootUrl = `https://swapi.dev/api/${resourceType}/`;
-    }
+  constructor(resourceType: ResourcesType) {
+    this.rootUrl = `https://swapi.dev/api/${resourceType}/`;
+  }
 
-    public async getPage(page: number = 1, search?: string) {
-      if (search) {
-        const cached = useSessionStorage(this.rootUrl, null, {
-          serializer: StorageSerializers.object,
-        });
-      
-        if (!cached.value) {
-          cached.value = await $fetch(`${this.rootUrl}?page=${page}&search=${search}`)
-        } 
-      
-        return cached.value;
-      }
-      const cached = useSessionStorage(this.rootUrl, null, {
-        serializer: StorageSerializers.object,
-      });
-    
-      if (!cached.value) {
-        cached.value = await $fetch(`${this.rootUrl}?page=${page}`)
-      } 
-    
-      return cached.value;
-    }
-
-    public async find(predicate: (single: T) => boolean) {
-      const { count, results } = await this.getPage();
-        const pages = Math.ceil( count / results.length);
-        const left = Array.from(
-          {
-            length: pages - 1,
-          },
-          (_, i) => this.getPage(2 + i)
-        );
-        const restResults = await Promise.all(left);
-          const startArray = [...results] 
-          try {
-            const totalResults: T[] = restResults.reduce((prev, current) => {
-              return [...prev, ...current.results];
-            }, startArray);
-    
-            return _.filter(totalResults, predicate);
-          } catch(error: unknown) {
-            return null;
-          }
-    }
-
-    public async getAll() {
-      const { count, results } = await this.getPage();
-      const pages = Math.ceil( count / results.length);
-      const left = Array.from(
-        {
-          length: pages - 1,
-        },
-        (_, i) => this.getPage(2 + i)
+  public async getPage(page: number = 1, search?: string) {
+    if (search) {
+      return await $fetch<IPage<T>>(
+        `${this.rootUrl}?page=${page}&search=${search}`
       );
-      const restResults = await Promise.all(left);
-        const startArray = [...results] 
-        try {
-          const totalResults: T[] = restResults.reduce((prev, current) => {
-            return [...prev, ...current.results];
-          }, startArray);
-          return totalResults
-        } catch (error) {
-          return null;
-        }
     }
 
-    public async findBySearch(predicate: string[]) {
-      return (await Promise.all(
-        predicate.map((query) => $fetch(`${this.rootUrl}?search=${query}`))
-      )).map((item) => item);
-    }
+    return $fetch<IPage<T>>(`${this.rootUrl}?page=${page}`);
+  }
 
-    public async findByUrl(urls: string[]) {
-      return (await Promise.all(
-        urls.map((query) =>  $fetch(query))
-      )).map((item) => item);
+  public async find(predicate: (single: T) => boolean) {
+    const { count, results } = await this.getPage();
+    const pages = Math.ceil(count / results.length);
+    const left = Array.from(
+      {
+        length: pages - 1,
+      },
+      (_, i) => this.getPage(2 + i)
+    );
+    const restResults = await Promise.all(left);
+    const startArray = [...results];
+    try {
+      const totalResults: T[] = restResults.reduce((prev, current) => {
+        return [...prev, ...current.results];
+      }, startArray);
+
+      return _.filter(totalResults, predicate);
+    } catch (error: unknown) {
+      return null;
     }
   }
+
+  public async getAll() {
+    const { count, results } = await this.getPage();
+    const pages = Math.ceil(count / results.length);
+    const left = Array.from(
+      {
+        length: pages - 1,
+      },
+      (_, i) => this.getPage(2 + i)
+    );
+    const restResults = await Promise.all(left);
+    const startArray = [...results];
+    try {
+      const totalResults: T[] = restResults.reduce((prev, current) => {
+        return [...prev, ...current.results];
+      }, startArray);
+      return totalResults;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  public async findBySearch(predicate: string[]) {
+    return (
+      await Promise.all(
+        predicate.map((query) => $fetch<T>(`${this.rootUrl}?search=${query}`))
+      )
+    ).map((item) => item);
+  }
+
+  public async findByUrl(urls: string[]) {
+    return (await Promise.all(urls.map((query) => $fetch<T>(query)))).map(
+      (item) => item
+    );
+  }
+}
 
 export const Films = new StarWarsClass<IFilm>(ResourcesType.Films);
 export const People = new StarWarsClass<IPeople>(ResourcesType.People);
