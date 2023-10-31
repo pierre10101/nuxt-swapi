@@ -17,14 +17,14 @@ class StarWarsClass<T> {
     this.rootUrl = `https://swapi.dev/api/${resourceType}/`;
   }
 
-  public async getPage(page: number = 1, search?: string) {
+  public async getPage(page: number = 1, search?: string):Promise<IPage<T>> {
     if (search) {
-      return await $fetch<IPage<T>>(
+      return await $fetch(
         `${this.rootUrl}?page=${page}&search=${search}`
       );
     }
 
-    return $fetch<IPage<T>>(`${this.rootUrl}?page=${page}`);
+    return $fetch(`${this.rootUrl}?page=${page}`);
   }
 
   public async find(predicate: (single: T) => boolean) {
@@ -70,16 +70,16 @@ class StarWarsClass<T> {
     }
   }
 
-  public async findBySearch(predicate: string[]) {
+  public async findBySearch(predicate: string[]): Promise<T[]> {
     return (
       await Promise.all(
-        predicate.map((query) => $fetch<T>(`${this.rootUrl}?search=${query}`))
+        predicate.map((query) => $fetch(`${this.rootUrl}?search=${query}`))
       )
     ).map((item) => item);
   }
 
-  public async findByUrl(urls: string[]) {
-    return (await Promise.all(urls.map((query) => $fetch<T>(query)))).map(
+  public async findByUrl(urls: string[]): Promise<T[]> {
+    return (await Promise.all(urls.map((query) => $fetch(query)))).map(
       (item) => item
     );
   }
